@@ -1,0 +1,98 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 30px;
+}
+
+.header {
+  text-align: center;
+  background: linear-gradient(135deg, #6C63FF, #8B85FF);
+  color: white;
+  padding: 30px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.add-habit-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-habit-form input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 1em;
+}
+
+.add-habit-form button {
+  padding: 12px 20px;
+  background: #6C63FF;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.habit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.habit-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.habit-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.progress-bar {
+  height: 20px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, #6C63FF, #8B85FF);
+  transition: width 0.3s;
+}
+
+.habit-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.habit-controls button {
+  padding: 6px 12px;
+  font-size: 1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #ddd;
+  color: #333;
+}
+
+.habit-controls button:hover {
+  background: #ccc;
+}
