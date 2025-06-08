@@ -1,0 +1,17 @@
+# ---- Stage 1: Build the app ----
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# ---- Stage 2: Run the app ----
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+
+# Copy only the JAR from the builder stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expose the port (Render uses PORT env var)
+EXPOSE 8080
+
+ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT}"]
