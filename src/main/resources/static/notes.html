@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Journal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Journal</h1>
+      <p>Write your thoughts & reflections</p>
+    </header>
+    <div class="container">
+      <textarea id="journalText" rows="6" style="width:100%; margin-bottom: 10px;"></textarea>
+      <input type="date" id="journalDate" />
+      <button onclick="saveNote()">Save</button>
+      <h3>Your Entries</h3>
+      <ul id="notesList"></ul>
+    </div>
+  </div>
+  <script>
+    function saveNote() {
+      const date = document.getElementById('journalDate').value;
+      const text = document.getElementById('journalText').value;
+      if (!date || !text) return;
+      const notes = JSON.parse(localStorage.getItem('journal') || '[]');
+      notes.push({ date, text });
+      localStorage.setItem('journal', JSON.stringify(notes));
+      renderNotes();
+    }
+    function renderNotes() {
+      const list = document.getElementById('notesList');
+      const notes = JSON.parse(localStorage.getItem('journal') || '[]');
+      list.innerHTML = '';
+      notes.forEach(n => {
+        const li = document.createElement('li');
+        li.innerText = `${n.date}: ${n.text}`;
+        list.appendChild(li);
+      });
+    }
+    renderNotes();
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time Planner</title>
+  <link rel="stylesheet" href="debt.css" />
+</head>
+<body>
+  <div class="header">
+    <h1>Time Planner</h1>
+    <p>Schedule your focus sessions and tasks</p>
+  </div>
+  <div class="container">
+    <div class="add-debt-form">
+      <h2>Add Time Block</h2>
+      <input type="text" id="taskName" placeholder="Task name" />
+      <input type="number" id="duration" placeholder="Duration (minutes)" />
+      <input type="date" id="taskDate" />
+      <button onclick="addBlock()">Add</button>
+    </div>
+    <div class="calendar">
+      <h2>Planned Tasks</h2>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+  </div>
+  <script>
+    const tasks = [];
+    function addBlock() {
+      const name = document.getElementById('taskName').value;
+      const duration = document.getElementById('duration').value;
+      const date = document.getElementById('taskDate').value;
+      if (!name || !duration || !date) return alert('Fill all fields');
+      tasks.push({ name, duration, date });
+      render();
+    }
+    function render() {
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = '';
+      tasks.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'calendar-day';
+        div.innerText = `${t.date}: ${t.name} (${t.duration} mins)`;
+        grid.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productivity Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo"><i class="fas fa-bolt"></i> FinSol Pro</div>
+      <ul class="nav-links">
+        <li><a href="tasks.html">Tasks</a></li>
+        <li><a href="habit-tracker.html">Habits</a></li>
+        <li><a href="planner.html">Planner</a></li>
+        <li><a href="notes.html">Journal</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="overview-charts">
+      <div class="chart-container">
+        <h3>Tasks Completed</h3>
+        <canvas id="taskChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>Habits Streak</h3>
+        <canvas id="habitChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>Time Spent</h3>
+        <canvas id="timeChart"></canvas>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Tasks</title>
+  <link rel="stylesheet" href="bill_style.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-tasks"></i> <span data-hindi="कार्य सूची" data-english="Daily Tasks">Daily Tasks</span></h1>
+      <button class="language-toggle" onclick="toggleLanguage()">
+        <i class="fas fa-globe"></i>
+        <span data-hindi="English" data-english="हिंदी">English</span>
+      </button>
+    </header>
+
+    <main>
+      <div class="discount-info">
+        <h3 data-hindi="उत्पादकता बढ़ाएं" data-english="Boost Productivity">उत्पादकता बढ़ाएं</h3>
+        <p class="discount-text" data-hindi="हर दिन 5 कार्य पूरे करें!" data-english="Complete 5 tasks a day!">हर दिन 5 कार्य पूरे करें!</p>
+      </div>
+
+      <div class="input-section">
+        <div class="item-input">
+          <input type="text" id="taskTitle" placeholder="Enter task..." />
+          <button class="add-btn" onclick="addTask()">
+            <i class="fas fa-plus"></i> <span data-hindi="जोड़ें" data-english="Add">जोड़ें</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="items-list">
+        <table>
+          <thead>
+            <tr>
+              <th data-hindi="कार्य" data-english="Task">कार्य</th>
+              <th data-hindi="स्थिति" data-english="Status">स्थिति</th>
+              <th data-hindi="हटाएं" data-english="Remove">हटाएं</th>
+            </tr>
+          </thead>
+          <tbody id="itemsTableBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div class="buy-button-container">
+    <button class="buy-button" onclick="markAllDone()">
+      <i class="fas fa-check-circle"></i> <span data-hindi="पूर्ण करें" data-english="Mark All Done">पूर्ण करें</span>
+    </button>
+    <button class="return-button" onclick="window.location.href='index.html'">
+      <i class="fas fa-home"></i> <span data-hindi="डैशबोर्ड" data-english="Dashboard">डैशबोर्ड</span>
+    </button>
+  </div>
+
+  <script>
+    let currentLanguage = 'hindi';
+    let tasks = [];
+
+    function toggleLanguage() {
+      currentLanguage = currentLanguage === 'english' ? 'hindi' : 'english';
+      document.querySelectorAll('[data-hindi]').forEach(el => {
+        el.textContent = el.dataset[currentLanguage];
+      });
+    }
+
+    function addTask() {
+      const title = document.getElementById('taskTitle').value.trim();
+      if (!title) return alert('Enter a task name');
+      tasks.push({ title, done: false });
+      document.getElementById('taskTitle').value = '';
+      renderTasks();
+    }
+
+    function toggleDone(index) {
+      tasks[index].done = !tasks[index].done;
+      renderTasks();
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
+    }
+
+    function markAllDone() {
+      tasks.forEach(t => (t.done = true));
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const tbody = document.getElementById('itemsTableBody');
+      tbody.innerHTML = '';
+      tasks.forEach((task, i) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${task.title}</td>
+          <td>
+            <button onclick="toggleDone(${i})" class="status-btn" style="background-color:${task.done ? '#2ecc71' : '#f39c12'}; color:white; border:none; padding:5px 10px; border-radius:5px;">
+              ${task.done ? '✔ Done' : '⏳ Pending'}
+            </button>
+          </td>
+          <td>
+            <button class="delete-btn" onclick="deleteTask(${i})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Enable Enter key for task input
+    document.getElementById('taskTitle').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') addTask();
+    });
+  </script>
+</body>
+</html>
