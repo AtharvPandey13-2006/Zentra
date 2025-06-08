@@ -117,5 +117,165 @@
       if (e.key === 'Enter') addTask();
     });
   </script>
+  
+<!-- 🌟 Gemini Chatbot Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const chatPopup = document.getElementById("chatPopup");
+    const chatBody = document.getElementById("chatBody");
+    const chatInput = document.getElementById("chatInput");
+
+    window.toggleChat = function () {
+      chatPopup.style.display = chatPopup.style.display === "flex" ? "none" : "flex";
+    };
+
+    window.sendMessage = async function () {
+      const userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+
+      appendMessage("user", userMessage);
+      chatInput.value = "";
+      appendMessage("bot", "Thinking...");
+
+      try {
+        const reply = await getGeminiReply(userMessage);
+        const botMsgs = chatBody.querySelectorAll(".chat-message.bot");
+        botMsgs[botMsgs.length - 1].remove();
+        appendMessage("bot", reply);
+      } catch (err) {
+        appendMessage("bot", "Error fetching response 😞");
+      }
+    };
+
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    function appendMessage(sender, text) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `chat-message ${sender}`;
+      msgDiv.textContent = text;
+      chatBody.appendChild(msgDiv);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    async function getGeminiReply(message) {
+      const apiKey = "AIzaSyCC-Q01AQxm7bAvKmNKRIB8uR3OYXdfVao";
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: "user",
+                parts: [{ text: message }],
+              },
+            ],
+          }),
+        }
+      );
+      const data = await res.json();
+      return data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response.";
+    }
+  });
+</script>
+
+<!-- 🌟 Styles (you can also place this in your styles.css) -->
+<style>
+  .chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #10a37f;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+  }
+
+  .chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 320px;
+    max-height: 500px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-header {
+    background-color: #10a37f;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  .chat-body {
+    padding: 10px;
+    flex: 1;
+    overflow-y: auto;
+    font-size: 14px;
+  }
+
+  .chat-message {
+    margin: 6px 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    max-width: 80%;
+  }
+
+  .chat-message.user {
+    background-color: #e0e0e0;
+    align-self: flex-end;
+    text-align: right;
+  }
+
+  .chat-message.bot {
+    background-color: #d6f5ee;
+    align-self: flex-start;
+    text-align: left;
+  }
+
+  .chat-input {
+    display: flex;
+    border-top: 1px solid #ccc;
+  }
+
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .chat-input button {
+    padding: 10px 15px;
+    background-color: #10a37f;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .chat-input button:hover {
+    background-color: #0e8e6a;
+  }
+</style>
 </body>
 </html>
